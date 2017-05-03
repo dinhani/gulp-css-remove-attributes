@@ -14,7 +14,7 @@ const PLUGIN_NAME = 'gulp-css-remove-attributes';
 // =============================================================================
 // MODULE
 // =============================================================================
-module.exports = function (attributesToRemove) {
+module.exports = function (attributesToRemove, options) {
 
     // =========================================================================
     // INPUT VALIDATION
@@ -30,9 +30,9 @@ module.exports = function (attributesToRemove) {
     // FUNCTIONS
     // =========================================================================
     // INPUT
-    function parseInputCss(inputFile, encoding) {
+    function parseInputCss(inputFile, encoding, options) {
         let fileContent = inputFile.contents.toString(encoding);
-        let parsedCss = css.parse(fileContent);
+        let parsedCss = css.parse(fileContent, options);
         return parsedCss;
     }
 
@@ -50,15 +50,15 @@ module.exports = function (attributesToRemove) {
     }
 
     // OUTPUT
-    function outputFinalCss(modifiedCss) {
-        return css.stringify(modifiedCss);
+    function outputFinalCss(modifiedCss, options) {
+        return css.stringify(modifiedCss, options);
     }
 
     // MAIN
     let transform = function (file, encoding, callback) {
-        let parsedCss = parseInputCss(file, encoding);
+        let parsedCss = parseInputCss(file, encoding, options);
         let modifiedCss = removeCssAttributes(parsedCss, attributesToRemove)
-        let finalCss = outputFinalCss(modifiedCss)
+        let finalCss = outputFinalCss(modifiedCss, options)
         file.contents = new Buffer(finalCss);
 
         // success

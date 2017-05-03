@@ -57,3 +57,10 @@ cssFile = function () {
         contents: new Buffer(css)
     })
 }
+invalidCssFile = function () {
+    let css = 'invalid css';
+
+    return new File({
+        contents: new Buffer(css)
+    })
+}
