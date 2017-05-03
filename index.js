@@ -2,8 +2,9 @@
 // DEPENDENCIES
 // =============================================================================
 const through = require('through2');
-const css = require('css');
 const PluginError = require('gulp-util').PluginError;
+const util = require('util');
+const css = require('css');
 
 // =============================================================================
 // CONSTANTS
@@ -15,14 +16,19 @@ const PLUGIN_NAME = 'gulp-css-remove-attributes';
 // =============================================================================
 module.exports = function (attributesToRemove) {
 
-    // VALIDATE
+    // =========================================================================
+    // INPUT VALIDATION
+    // =========================================================================
     if (attributesToRemove === undefined || attributesToRemove === null) {
-        throw new PluginError(PLUGIN_NAME, 'Missing attributes to remove parameter.');
+        throw new PluginError(PLUGIN_NAME, 'Missing attributes to remove.');
     }
     if (!Array.isArray(attributesToRemove)) {
-        throw new PluginError(PLUGIN_NAME, 'The attributes to remove shoud be an array. The passed argument is a ' + typeof attributesToRemove);
+        throw new PluginError(PLUGIN_NAME, 'The attributes to remove shoud be an array. The passed argument is a "' + typeof attributesToRemove + '".');
     }
 
+    // =========================================================================
+    // FUNCTIONS
+    // =========================================================================
     // INPUT
     function parseInputCss(inputFile, encoding) {
         let fileContent = inputFile.contents.toString(encoding);
@@ -33,9 +39,11 @@ module.exports = function (attributesToRemove) {
     // PARSING
     function removeCssAttributes(parsedCss, attributesToRemove) {
         parsedCss.stylesheet.rules = parsedCss.stylesheet.rules
-            .filter(rule => rule.type === 'rule')
             .map(rule => {
-                rule.declarations = rule.declarations.filter(declaration => !attributesToRemove.includes(declaration.property));
+                // only filter rules, the other types are just kept
+                if (rule.type === 'rule') {
+                    rule.declarations = rule.declarations.filter(declaration => !attributesToRemove.includes(declaration.property));
+                }
                 return rule;
             })
         return parsedCss;
