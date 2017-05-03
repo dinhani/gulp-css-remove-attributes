@@ -27,5 +27,11 @@
     "devDependencies": {
         "assert": "^1.4.1",
         "vinyl": "^2.0.2"
-    }
+    },
+    "keywords": [
+        "gulpplugin",
+        "css",
+        "stylesheet",
+        "attributes"
+    ]
 }
