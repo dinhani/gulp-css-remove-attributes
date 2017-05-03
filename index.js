@@ -8,7 +8,7 @@ const PluginError = require('gulp-util').PluginError;
 // =============================================================================
 // CONSTANTS
 // =============================================================================
-const PLUGIN_NAME = 'gulp-css-attributes-remover';
+const PLUGIN_NAME = 'gulp-css-remove-attributes';
 
 // =============================================================================
 // MODULE
